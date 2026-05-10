@@ -1,0 +1,14 @@
+G:\ITI\MVC\ECommerce\Ecommerce.DAL\bin\Debug\net10.0\Ecommerce.DAL.deps.json
+G:\ITI\MVC\ECommerce\Ecommerce.DAL\bin\Debug\net10.0\Ecommerce.DAL.runtimeconfig.json
+G:\ITI\MVC\ECommerce\Ecommerce.DAL\bin\Debug\net10.0\Ecommerce.DAL.dll
+G:\ITI\MVC\ECommerce\Ecommerce.DAL\bin\Debug\net10.0\Ecommerce.DAL.pdb
+G:\ITI\MVC\ECommerce\Ecommerce.DAL\obj\Debug\net10.0\Ecommerce.DAL.csproj.AssemblyReference.cache
+G:\ITI\MVC\ECommerce\Ecommerce.DAL\obj\Debug\net10.0\Ecommerce.DAL.GeneratedMSBuildEditorConfig.editorconfig
+G:\ITI\MVC\ECommerce\Ecommerce.DAL\obj\Debug\net10.0\Ecommerce.DAL.AssemblyInfoInputs.cache
+G:\ITI\MVC\ECommerce\Ecommerce.DAL\obj\Debug\net10.0\Ecommerce.DAL.AssemblyInfo.cs
+G:\ITI\MVC\ECommerce\Ecommerce.DAL\obj\Debug\net10.0\Ecommerce.DAL.csproj.CoreCompileInputs.cache
+G:\ITI\MVC\ECommerce\Ecommerce.DAL\obj\Debug\net10.0\Ecommerce.DAL.dll
+G:\ITI\MVC\ECommerce\Ecommerce.DAL\obj\Debug\net10.0\refint\Ecommerce.DAL.dll
+G:\ITI\MVC\ECommerce\Ecommerce.DAL\obj\Debug\net10.0\Ecommerce.DAL.pdb
+G:\ITI\MVC\ECommerce\Ecommerce.DAL\obj\Debug\net10.0\Ecommerce.DAL.genruntimeconfig.cache
+G:\ITI\MVC\ECommerce\Ecommerce.DAL\obj\Debug\net10.0\ref\Ecommerce.DAL.dll

@@ -1,0 +1,447 @@
+﻿@model IEnumerable<ECommerce.PL.ViewModels.User>
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+
+    :root {
+        --bg: #0d0f14;
+        --surface: #13161e;
+        --surface2: #1a1e29;
+        --border: #252a38;
+        --accent: #4f7cff;
+        --accent-glow: rgba(79, 124, 255, 0.18);
+        --danger: #ff4f6a;
+        --danger-glow: rgba(255, 79, 106, 0.15);
+        --text: #e8eaf0;
+        --muted: #6b7494;
+        --success: #3ddc97;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+        background: var(--bg);
+        font-family: 'DM Sans', sans-serif;
+        color: var(--text);
+        min-height: 100vh;
+    }
+
+    .page-wrapper {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 56px 32px;
+    }
+
+    /* ── Header ── */
+    .page-header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        margin-bottom: 40px;
+        animation: fadeUp 0.5s ease both;
+    }
+
+    .page-header-left h1 {
+        font-family: 'Syne', sans-serif;
+        font-size: 2.4rem;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        line-height: 1;
+        background: linear-gradient(135deg, #fff 40%, var(--accent));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .page-header-left p {
+        margin-top: 6px;
+        font-size: 0.9rem;
+        color: var(--muted);
+        font-weight: 300;
+    }
+
+    .badge-count {
+        background: var(--accent-glow);
+        border: 1px solid rgba(79,124,255,0.3);
+        color: var(--accent);
+        font-family: 'Syne', sans-serif;
+        font-size: 0.75rem;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 20px;
+        margin-left: 12px;
+        vertical-align: middle;
+        letter-spacing: 0.04em;
+    }
+
+    .btn-add {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--accent);
+        color: #fff;
+        font-family: 'Syne', sans-serif;
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        padding: 11px 22px;
+        border-radius: 10px;
+        text-decoration: none;
+        box-shadow: 0 0 24px var(--accent-glow);
+        transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .btn-add:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 32px rgba(79,124,255,0.35);
+    }
+
+    .btn-add svg { width: 16px; height: 16px; }
+
+    /* ── Search bar ── */
+    .search-bar {
+        position: relative;
+        margin-bottom: 24px;
+        animation: fadeUp 0.5s 0.1s ease both;
+    }
+
+    .search-bar svg {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--muted);
+        width: 17px;
+        height: 17px;
+    }
+
+    .search-bar input {
+        width: 100%;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 12px 16px 12px 44px;
+        color: var(--text);
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.9rem;
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .search-bar input::placeholder { color: var(--muted); }
+
+    .search-bar input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    /* ── Table Card ── */
+    .table-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+        animation: fadeUp 0.5s 0.15s ease both;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    thead {
+        background: var(--surface2);
+        border-bottom: 1px solid var(--border);
+    }
+
+    thead th {
+        font-family: 'Syne', sans-serif;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--muted);
+        padding: 14px 20px;
+        text-align: left;
+    }
+
+    tbody tr {
+        border-bottom: 1px solid var(--border);
+        transition: background 0.15s;
+    }
+
+    tbody tr:last-child { border-bottom: none; }
+
+    tbody tr:hover { background: var(--surface2); }
+
+    tbody td {
+        padding: 16px 20px;
+        font-size: 0.9rem;
+        vertical-align: middle;
+    }
+
+    .td-id {
+        font-family: 'Syne', sans-serif;
+        font-size: 0.8rem;
+        color: var(--muted);
+        font-weight: 600;
+    }
+
+    /* Avatar + name combo */
+    .user-cell {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), #8b5cf6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Syne', sans-serif;
+        font-size: 0.75rem;
+        font-weight: 800;
+        color: #fff;
+        flex-shrink: 0;
+    }
+
+    .user-name {
+        font-weight: 500;
+        font-size: 0.9rem;
+    }
+
+    .user-email {
+        font-size: 0.78rem;
+        color: var(--muted);
+        margin-top: 1px;
+    }
+
+    /* Email badge */
+    .email-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 4px 10px;
+        font-size: 0.82rem;
+        color: var(--muted);
+    }
+
+    /* Action buttons */
+    .action-group {
+        display: flex;
+        gap: 8px;
+    }
+
+    .btn-edit, .btn-delete {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.78rem;
+        font-weight: 500;
+        padding: 6px 13px;
+        border-radius: 7px;
+        text-decoration: none;
+        border: 1px solid transparent;
+        transition: all 0.15s;
+        cursor: pointer;
+    }
+
+    .btn-edit {
+        background: var(--accent-glow);
+        border-color: rgba(79,124,255,0.25);
+        color: var(--accent);
+    }
+
+    .btn-edit:hover {
+        background: var(--accent);
+        color: #fff;
+        border-color: var(--accent);
+    }
+
+    .btn-delete {
+        background: var(--danger-glow);
+        border-color: rgba(255,79,106,0.25);
+        color: var(--danger);
+    }
+
+    .btn-delete:hover {
+        background: var(--danger);
+        color: #fff;
+        border-color: var(--danger);
+    }
+
+    .btn-edit svg, .btn-delete svg { width: 13px; height: 13px; }
+
+    /* Empty state */
+    .empty-state {
+        padding: 64px 20px;
+        text-align: center;
+    }
+
+    .empty-state-icon {
+        width: 56px;
+        height: 56px;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 16px;
+        color: var(--muted);
+    }
+
+    .empty-state h3 {
+        font-family: 'Syne', sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+
+    .empty-state p { font-size: 0.85rem; color: var(--muted); }
+
+    /* Animations */
+    @@keyframes fadeUp {
+        from { opacity: 0; transform: translateY(16px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    tbody tr {
+        animation: fadeUp 0.35s ease both;
+    }
+
+    tbody tr:nth-child(1) { animation-delay: 0.18s; }
+    tbody tr:nth-child(2) { animation-delay: 0.22s; }
+    tbody tr:nth-child(3) { animation-delay: 0.26s; }
+    tbody tr:nth-child(4) { animation-delay: 0.30s; }
+    tbody tr:nth-child(5) { animation-delay: 0.34s; }
+    tbody tr:nth-child(n+6) { animation-delay: 0.36s; }
+</style>
+
+<div class="page-wrapper">
+
+    <!-- Header -->
+    <div class="page-header">
+        <div class="page-header-left">
+            <h1>
+                Users
+                @{
+                    var count = Model?.Count() ?? 0;
+                }
+                <span class="badge-count">@count total</span>
+            </h1>
+            <p>Manage all registered accounts in one place</p>
+        </div>
+        <a asp-action="AddUser" class="btn-add">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+            Add User
+        </a>
+    </div>
+
+    <!-- Search -->
+    <div class="search-bar">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8" />
+            <path stroke-linecap="round" d="M21 21l-4.35-4.35" />
+        </svg>
+        <input type="text" id="searchInput" placeholder="Search by name or email…" />
+    </div>
+
+    <!-- Table -->
+    <div class="table-card">
+        @if (!Model.Any())
+        {
+            <div class="empty-state">
+                <div class="empty-state-icon">
+                    <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <path stroke-linecap="round" d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
+                    </svg>
+                </div>
+                <h3>No users yet</h3>
+                <p>Add your first user to get started</p>
+            </div>
+        }
+        else
+        {
+            <table id="usersTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>User</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        var initials = string.Join("", (user.UserName ?? "?").Split(' ')
+                        .Take(2).Select(w => w.Length > 0 ? w[0].ToString().ToUpper() : ""));
+
+                        <tr data-name="@user.UserName?.ToLower()" data-email="@user.UserEmail?.ToLower()">
+                            <td class="td-id">#@user.ID</td>
+                            <td>
+                                <div class="user-cell">
+                                    <div class="avatar">@initials</div>
+                                    <div>
+                                        <div class="user-name">@user.UserName</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="email-pill">@user.UserEmail</span>
+                            </td>
+                            <td>
+                                <div class="action-group">
+                                    <a asp-action="UpdateUser" asp-route-email="@user.UserEmail" class="btn-edit">
+                                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                        </svg>
+                                        Edit
+                                    </a>
+                                    <a asp-action="DeleteUser" asp-route-id="@user.ID" class="btn-delete">
+
+                                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                        Delete
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+<script>
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.addEventListener('input', function () {
+            const q = this.value.toLowerCase();
+            document.querySelectorAll('#usersTable tbody tr').forEach(row => {
+                const name  = row.dataset.name  || '';
+                const email = row.dataset.email || '';
+                row.style.display = (name.includes(q) || email.includes(q)) ? '' : 'none';
+            });
+        });
+    }
+</script>

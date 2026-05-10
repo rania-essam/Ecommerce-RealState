@@ -1,0 +1,370 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap');
+
+    :root {
+        --bg: #0d0f14;
+        --surface: #13161e;
+        --surface2: #1a1e29;
+        --border: #252a38;
+        --accent: #4f7cff;
+        --accent-glow: rgba(79,124,255,0.18);
+        --text: #e8eaf0;
+        --muted: #6b7494;
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        background: var(--bg);
+        font-family: 'DM Sans', sans-serif;
+        color: var(--text);
+        min-height: 100vh;
+    }
+
+    /* ── Hero ── */
+    .hero {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        min-height: 88vh;
+        padding: 60px 24px;
+        position: relative;
+        overflow: hidden;
+        animation: fadeUp 0.6s ease both;
+    }
+
+        /* Background grid */
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(rgba(79,124,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(79,124,255,0.05) 1px, transparent 1px);
+            background-size: 48px 48px;
+            pointer-events: none;
+        }
+
+        /* Radial fade over grid */
+        .hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 70% 60% at 50% 50%, transparent 30%, var(--bg) 100%);
+            pointer-events: none;
+        }
+
+    .hero-inner {
+        position: relative;
+        z-index: 1;
+        max-width: 680px;
+    }
+
+    /* Logo mark */
+    .logo-mark {
+        width: 72px;
+        height: 72px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 32px;
+        box-shadow: 0 0 40px var(--accent-glow);
+        animation: float 4s ease-in-out infinite;
+    }
+
+        .logo-mark svg {
+            width: 36px;
+            height: 36px;
+            color: var(--accent);
+        }
+
+    /* Badge */
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 5px 14px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: var(--muted);
+        letter-spacing: 0.04em;
+        margin-bottom: 24px;
+    }
+
+        .hero-badge span {
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+    /* Heading */
+    .hero h1 {
+        font-family: 'Syne', sans-serif;
+        font-size: clamp(2.4rem, 6vw, 3.8rem);
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        line-height: 1.05;
+        margin-bottom: 20px;
+    }
+
+        .hero h1 .gradient-text {
+            background: linear-gradient(135deg, #fff 30%, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+    .hero p {
+        font-size: 1.05rem;
+        color: var(--muted);
+        font-weight: 300;
+        line-height: 1.7;
+        max-width: 460px;
+        margin: 0 auto 40px;
+    }
+
+    /* CTA buttons */
+    .hero-ctas {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--accent);
+        color: #fff;
+        font-family: 'Syne', sans-serif;
+        font-size: 0.88rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        padding: 12px 24px;
+        border-radius: 10px;
+        text-decoration: none;
+        box-shadow: 0 0 28px var(--accent-glow);
+        transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 36px rgba(79,124,255,0.4);
+        }
+
+    .btn-secondary {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--surface);
+        color: var(--text);
+        font-family: 'Syne', sans-serif;
+        font-size: 0.88rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        padding: 12px 24px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        text-decoration: none;
+        transition: background 0.15s, border-color 0.15s;
+    }
+
+        .btn-secondary:hover {
+            background: var(--surface2);
+            border-color: rgba(79,124,255,0.3);
+        }
+
+        .btn-primary svg, .btn-secondary svg {
+            width: 16px;
+            height: 16px;
+        }
+
+    /* ── Feature cards ── */
+    .features {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 0 24px 80px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 16px;
+        animation: fadeUp 0.6s 0.2s ease both;
+    }
+
+    .feat-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 28px 24px;
+        transition: border-color 0.2s, transform 0.2s;
+    }
+
+        .feat-card:hover {
+            border-color: rgba(79,124,255,0.3);
+            transform: translateY(-3px);
+        }
+
+    .feat-icon {
+        width: 44px;
+        height: 44px;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 16px;
+        color: var(--accent);
+    }
+
+        .feat-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+    .feat-card h3 {
+        font-family: 'Syne', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+        letter-spacing: -0.01em;
+    }
+
+    .feat-card p {
+        font-size: 0.83rem;
+        color: var(--muted);
+        line-height: 1.6;
+        font-weight: 300;
+    }
+
+    /* Animations */
+    @@keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@keyframes float {
+        0%, 100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-8px);
+        }
+    }
+
+    @@keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.4;
+        }
+    }
+</style>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="hero-inner">
+
+        <div class="logo-mark">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            </svg>
+        </div>
+
+        <div class="hero-badge">
+            <span></span> Now live &amp; open for orders
+        </div>
+
+        <h1>
+            <span class="gradient-text">Your Store,<br />Reimagined.</span>
+        </h1>
+
+        <p>
+            A modern ecommerce platform built with ASP.NET Core.
+            Manage users, browse products, and track orders — all in one place.
+        </p>
+
+        <div class="hero-ctas">
+            <a asp-controller="User" asp-action="ShowAll" class="btn-primary">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                    <path stroke-linecap="round" d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path stroke-linecap="round" d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
+                </svg>
+                Manage Users
+            </a>
+            <a asp-controller="User" asp-action="AddUser" class="btn-secondary">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                    <path stroke-linecap="round" d="M12 4v16m8-8H4" />
+                </svg>
+                Add New User
+            </a>
+        </div>
+
+    </div>
+</section>
+
+<!-- Feature cards -->
+<section class="features">
+
+    <div class="feat-card">
+        <div class="feat-icon">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path stroke-linecap="round" d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
+            </svg>
+        </div>
+        <h3>User Management</h3>
+        <p>Add, update, and remove users with full CRUD support across a clean 3-layer architecture.</p>
+    </div>
+
+    <div class="feat-card">
+        <div class="feat-icon">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            </svg>
+        </div>
+        <h3>Order Tracking</h3>
+        <p>Each user account is linked to their full order history for end-to-end visibility.</p>
+    </div>
+
+    <div class="feat-card">
+        <div class="feat-icon">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+        </div>
+        <h3>Secure Auth</h3>
+        <p>Passwords hashed with BCrypt. Built-in model validation keeps data safe at every layer.</p>
+    </div>
+
+</section>

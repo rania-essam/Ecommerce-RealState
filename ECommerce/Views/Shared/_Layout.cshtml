@@ -1,0 +1,567 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ECommerce</title>
+    <script type="importmap"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ECommerce.styles.css" asp-append-version="true" />
+
+    <style>
+        :root {
+            --bg: #0d0f14;
+            --surface: #13161e;
+            --surface2: #1a1e29;
+            --border: #252a38;
+            --accent: #4f7cff;
+            --accent-glow: rgba(79,124,255,0.18);
+            --text: #e8eaf0;
+            --muted: #6b7494;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── Remove Bootstrap container padding that clashes ── */
+        .page-container {
+            flex: 1;
+        }
+
+        /* ══════════════════════════════
+                   NAVBAR
+                ══════════════════════════════ */
+        .site-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(13, 15, 20, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 32px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Brand */
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .nav-brand-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--accent);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 16px var(--accent-glow);
+            flex-shrink: 0;
+        }
+
+            .nav-brand-icon svg {
+                width: 17px;
+                height: 17px;
+                color: #fff;
+            }
+
+        .nav-brand-name {
+            font-family: 'Syne', sans-serif;
+            font-size: 1rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: var(--text);
+        }
+
+        /* Nav links */
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            list-style: none;
+        }
+
+            .nav-links a {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 6px 14px;
+                border-radius: 8px;
+                font-size: 0.85rem;
+                font-weight: 500;
+                color: var(--muted);
+                text-decoration: none;
+                border: 1px solid transparent;
+                transition: color 0.15s, background 0.15s, border-color 0.15s;
+            }
+
+                .nav-links a:hover {
+                    color: var(--text);
+                    background: var(--surface2);
+                    border-color: var(--border);
+                }
+
+                .nav-links a.active {
+                    color: var(--accent);
+                    background: var(--accent-glow);
+                    border-color: rgba(79,124,255,0.25);
+                }
+
+                .nav-links a svg {
+                    width: 14px;
+                    height: 14px;
+                    opacity: 0.7;
+                }
+
+        /* Nav right: Users button */
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: var(--accent);
+            color: #fff;
+            font-family: 'Syne', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            padding: 7px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            box-shadow: 0 0 20px var(--accent-glow);
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+            .nav-btn:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 4px 24px rgba(79,124,255,0.4);
+                color: #fff;
+            }
+
+            .nav-btn svg {
+                width: 13px;
+                height: 13px;
+            }
+
+        /* Hamburger (mobile) */
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            padding: 6px 8px;
+            cursor: pointer;
+            color: var(--muted);
+        }
+
+            .nav-toggle svg {
+                width: 18px;
+                height: 18px;
+                display: block;
+            }
+
+        /* Mobile menu */
+        .nav-mobile {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 24px 16px;
+        }
+
+            .nav-mobile a {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 9px 14px;
+                border-radius: 8px;
+                font-size: 0.88rem;
+                font-weight: 500;
+                color: var(--muted);
+                text-decoration: none;
+                border: 1px solid transparent;
+                transition: all 0.15s;
+            }
+
+                .nav-mobile a:hover {
+                    color: var(--text);
+                    background: var(--surface2);
+                    border-color: var(--border);
+                }
+
+                .nav-mobile a svg {
+                    width: 15px;
+                    height: 15px;
+                    opacity: 0.7;
+                }
+
+            .nav-mobile.open {
+                display: flex;
+            }
+
+        @@media (max-width: 640px) {
+            .nav-links, .nav-btn {
+                display: none;
+            }
+
+            .nav-toggle {
+                display: flex;
+                align-items: center;
+            }
+
+            .site-nav {
+                padding: 0 20px;
+            }
+        }
+
+        /* ══════════════════════════════
+                   MAIN CONTENT
+                ══════════════════════════════ */
+        .site-main {
+            flex: 1;
+        }
+
+        /* ══════════════════════════════
+                   FOOTER
+                ══════════════════════════════ */
+        .site-footer {
+            border-top: 1px solid var(--border);
+            background: var(--surface);
+            padding: 40px 32px 28px;
+            margin-top: auto;
+        }
+
+        .footer-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: start;
+            gap: 32px;
+        }
+
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .footer-brand-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-brand-icon {
+            width: 28px;
+            height: 28px;
+            background: var(--accent);
+            border-radius: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .footer-brand-icon svg {
+                width: 14px;
+                height: 14px;
+                color: #fff;
+            }
+
+        .footer-brand-name {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: var(--text);
+        }
+
+        .footer-tagline {
+            font-size: 0.78rem;
+            color: var(--muted);
+            font-weight: 300;
+            line-height: 1.5;
+            max-width: 260px;
+        }
+
+        .footer-copy {
+            font-size: 0.72rem;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: flex-end;
+        }
+
+        .footer-links-label {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        .footer-links a {
+            font-size: 0.82rem;
+            color: var(--muted);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.15s;
+        }
+
+            .footer-links a:hover {
+                color: var(--text);
+            }
+
+            .footer-links a svg {
+                width: 13px;
+                height: 13px;
+            }
+
+        .footer-divider {
+            max-width: 1100px;
+            margin: 24px auto 0;
+            border: none;
+            border-top: 1px solid var(--border);
+            padding-top: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.72rem;
+            color: var(--muted);
+        }
+
+            .footer-divider a {
+                color: var(--muted);
+                text-decoration: none;
+                transition: color 0.15s;
+            }
+
+                .footer-divider a:hover {
+                    color: var(--accent);
+                }
+
+        @@media (max-width: 580px) {
+            .footer-inner {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-links {
+                align-items: flex-start;
+            }
+
+            .site-footer {
+                padding: 32px 20px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ── Navbar ── -->
+    <header>
+        <nav class="site-nav">
+            <!-- Brand -->
+            <a class="nav-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                <div class="nav-brand-icon">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                </div>
+                <span class="nav-brand-name">ECommerce</span>
+            </a>
+
+            <!-- Desktop links -->
+            <ul class="nav-links">
+                <li>
+                    <a asp-area="" asp-controller="Home" asp-action="Index">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                        </svg>
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <a asp-area="" asp-controller="User" asp-action="ShowAll">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path stroke-linecap="round" d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
+                        </svg>
+                        Users
+                    </a>
+                </li>
+                <li>
+                    <a asp-area="" asp-controller="Home" asp-action="Privacy">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                        Privacy
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Right side -->
+            <div class="nav-right">
+                <a asp-controller="User" asp-action="AddUser" class="nav-btn">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Add User
+                </a>
+
+                <!-- Hamburger -->
+                <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Mobile menu -->
+        <div class="nav-mobile" id="navMobile">
+            <a asp-area="" asp-controller="Home" asp-action="Index">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                Home
+            </a>
+            <a asp-area="" asp-controller="User" asp-action="ShowAll">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                </svg>
+                Users
+            </a>
+            <a asp-area="" asp-controller="Home" asp-action="Privacy">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                Privacy
+            </a>
+            <a asp-controller="User" asp-action="AddUser">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" d="M12 4v16m8-8H4" />
+                </svg>
+                Add User
+            </a>
+        </div>
+    </header>
+
+    <!-- ── Main content ── -->
+    <main class="site-main" role="main">
+        @RenderBody()
+    </main>
+
+    <!-- ── Footer ── -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+
+            <div class="footer-brand">
+                <div class="footer-brand-row">
+                    <div class="footer-brand-icon">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                        </svg>
+                    </div>
+                    <span class="footer-brand-name">ECommerce</span>
+                </div>
+                <p class="footer-tagline">
+                    A practice project built with ASP.NET Core MVC and a 3-layer architecture.
+                </p>
+                <span class="footer-copy">&copy; 2026 ECommerce. All rights reserved.</span>
+            </div>
+
+            <div class="footer-links">
+                <p class="footer-links-label">Navigation</p>
+                <a asp-area="" asp-controller="Home" asp-action="Index">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                    Home
+                </a>
+                <a asp-area="" asp-controller="User" asp-action="ShowAll">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                    </svg>
+                    Manage Users
+                </a>
+                <a asp-area="" asp-controller="Home" asp-action="Privacy">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                    Privacy
+                </a>
+            </div>
+
+        </div>
+
+        <div class="footer-divider">
+            <span>Built with ASP.NET Core MVC · Entity Framework Core · BCrypt</span>
+            <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy Policy</a>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script>
+        // Mobile menu toggle
+        const toggle = document.getElementById('navToggle');
+        const mobile = document.getElementById('navMobile');
+        if (toggle && mobile) {
+            toggle.addEventListener('click', () => mobile.classList.toggle('open'));
+        }
+
+        // Highlight active nav link
+        const links = document.querySelectorAll('.nav-links a, .nav-mobile a');
+        links.forEach(link => {
+            if (link.href === window.location.href) {
+                link.classList.add('active');
+            }
+        });
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
